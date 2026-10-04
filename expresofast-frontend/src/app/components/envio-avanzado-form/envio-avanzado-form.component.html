@@ -1,0 +1,148 @@
+<div class="card">
+  <h2>Registrar Envío con Paquetes</h2>
+
+  @if (mensajeExito) {
+    <div class="alert alert-success">{{ mensajeExito }}</div>
+  }
+  @if (mensajeError) {
+    <div class="alert alert-error">{{ mensajeError }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <fieldset>
+      <legend>Datos del envío</legend>
+
+      <div class="form-group">
+        <label for="numeroTracking">Número de tracking *</label>
+        <input
+          id="numeroTracking"
+          type="text"
+          formControlName="numeroTracking"
+          placeholder="Ej: EXP-2026-5001"
+          autocomplete="off" />
+        @if (form.controls.numeroTracking.pending) {
+          <small class="hint">Verificando disponibilidad...</small>
+        }
+        @if (form.controls.numeroTracking.valid && form.controls.numeroTracking.value) {
+          <small class="ok-text">Número de rastreo disponible.</small>
+        }
+        @if (mostrarError(form.controls.numeroTracking, 'required')) {
+          <small class="error-text">El número de tracking es obligatorio.</small>
+        }
+        @if (mostrarError(form.controls.numeroTracking, 'minlength')) {
+          <small class="error-text">Debe tener al menos 4 caracteres.</small>
+        }
+        @if (mostrarError(form.controls.numeroTracking, 'pattern')) {
+          <small class="error-text">Solo se permiten letras, números y guiones.</small>
+        }
+        @if (form.controls.numeroTracking.hasError('trackingTomado')) {
+          <small class="error-text">Este número de rastreo ya está en uso</small>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="destinatario">Destinatario *</label>
+          <input id="destinatario" type="text" formControlName="destinatario" placeholder="Nombre del destinatario" />
+          @if (mostrarError(form.controls.destinatario, 'required')) {
+            <small class="error-text">El destinatario es obligatorio.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="montoFlete">Monto de flete (₡) *</label>
+          <input id="montoFlete" type="number" step="0.01" formControlName="montoFlete" placeholder="0.00" />
+          @if (mostrarError(form.controls.montoFlete, 'required') || mostrarError(form.controls.montoFlete, 'min')) {
+            <small class="error-text">Ingrese un monto de flete mayor a cero.</small>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="direccionDestino">Dirección de destino *</label>
+        <input id="direccionDestino" type="text" formControlName="direccionDestino" placeholder="Dirección completa de entrega" />
+        @if (mostrarError(form.controls.direccionDestino, 'required')) {
+          <small class="error-text">La dirección de destino es obligatoria.</small>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fechaDespacho">Fecha de despacho *</label>
+          <input id="fechaDespacho" type="date" formControlName="fechaDespacho" />
+          @if (mostrarError(form.controls.fechaDespacho, 'required')) {
+            <small class="error-text">La fecha de despacho es obligatoria.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="fechaEntregaEstimada">Fecha de entrega estimada *</label>
+          <input id="fechaEntregaEstimada" type="date" formControlName="fechaEntregaEstimada" />
+          @if (mostrarError(form.controls.fechaEntregaEstimada, 'required')) {
+            <small class="error-text">La fecha de entrega estimada es obligatoria.</small>
+          }
+        </div>
+      </div>
+
+      @if (form.hasError('fechasInvalidas')) {
+        <div class="alert alert-error" role="alert">
+          La fecha de entrega estimada debe ser posterior a la fecha de despacho.
+        </div>
+      }
+    </fieldset>
+
+    <fieldset formArrayName="paquetes">
+      <legend>Paquetes del envío</legend>
+
+      @for (paquete of paquetes.controls; track paquete; let i = $index) {
+        <div class="paquete-item" [formGroupName]="i">
+          <div class="paquete-header">
+            <strong>Paquete {{ i + 1 }}</strong>
+            <button
+              type="button"
+              class="btn-eliminar"
+              (click)="eliminarPaquete(i)"
+              [disabled]="!puedeEliminar"
+              [attr.aria-label]="'Eliminar paquete ' + (i + 1)"
+              title="Eliminar paquete">
+              X
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group-wide">
+              <label [for]="'descripcion-' + i">Descripción *</label>
+              <input [id]="'descripcion-' + i" type="text" formControlName="descripcion" placeholder="Contenido del paquete" />
+              @if (mostrarError(paquete.controls.descripcion, 'required')) {
+                <small class="error-text">La descripción es obligatoria.</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label [for]="'peso-' + i">Peso (kg) *</label>
+              <input [id]="'peso-' + i" type="number" step="0.01" formControlName="pesoKg" placeholder="0.00" />
+              @if (mostrarError(paquete.controls.pesoKg, 'required') || mostrarError(paquete.controls.pesoKg, 'min')) {
+                <small class="error-text">Ingrese un peso mayor a cero.</small>
+              }
+              @if (mostrarError(paquete.controls.pesoKg, 'max')) {
+                <small class="error-text">El peso no puede exceder 999.99 kg.</small>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="paquetes-footer">
+        <button type="button" class="btn btn-secondary" (click)="agregarPaquete()">+ Añadir Paquete</button>
+        <span class="peso-total">Peso total: <strong>{{ pesoTotal | number:'1.2-2' }} kg</strong></span>
+      </div>
+    </fieldset>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="form.invalid || form.pending || enviando">
+      {{ enviando ? 'Registrando...' : 'Registrar Envío' }}
+    </button>
+  </form>
+</div>

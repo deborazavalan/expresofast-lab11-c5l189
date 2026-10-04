@@ -1,0 +1,43 @@
+<div class="card">
+  <h2>Dashboard de Envíos</h2>
+
+  <div class="alert alert-success" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+  <div class="alert alert-error" *ngIf="mensajeError">{{ mensajeError }}</div>
+
+  <p *ngIf="cargando">Cargando envíos...</p>
+
+  <table class="tabla-envios" *ngIf="!cargando && envios.length > 0">
+    <thead>
+      <tr>
+        <th>Código de Rastreo</th>
+        <th>Destinatario</th>
+        <th>Dirección Destino</th>
+        <th>Paquetes</th>
+        <th>Peso Total</th>
+        <th>Monto Flete</th>
+        <th>Estado</th>
+        <th>Actualizar Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let envio of envios">
+        <td>{{ envio.codigoRastreo }}</td>
+        <td>{{ envio.destinatario }}</td>
+        <td>{{ envio.direccionDestino }}</td>
+        <td>{{ envio.paquetes.length }}</td>
+        <td>{{ envio.pesoTotalKg | number:'1.2-2' }} kg</td>
+        <td>₡{{ envio.montoFlete | number:'1.2-2' }}</td>
+        <td><span [ngClass]="claseEstado(envio.estado)">{{ envio.estado }}</span></td>
+        <td>
+          <select
+            [ngModel]="envio.estado"
+            (ngModelChange)="onCambiarEstado(envio, $event)">
+            <option *ngFor="let estado of estadosDisponibles" [value]="estado">{{ estado }}</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!cargando && envios.length === 0 && !mensajeError">No hay envíos registrados todavía.</p>
+</div>

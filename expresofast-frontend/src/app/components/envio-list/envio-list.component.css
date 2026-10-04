@@ -1,0 +1,52 @@
+.tabla-envios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-envios th, .tabla-envios td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid #e4dbf7;
+  font-size: 0.9rem;
+}
+
+.tabla-envios th {
+  background-color: #f5f3fb;
+  font-weight: 700;
+  color: #362a52;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge-pendiente {
+  background-color: #fdf1dc;
+  color: #b6811f;
+}
+
+.badge-transito {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.badge-entregado {
+  background-color: #e3faf1;
+  color: #0f7a52;
+}
+
+.badge-cancelado {
+  background-color: #fde6ee;
+  color: #a3244f;
+}
+
+select {
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #e4dbf7;
+}

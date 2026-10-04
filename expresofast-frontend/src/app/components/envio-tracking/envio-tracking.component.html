@@ -1,0 +1,61 @@
+<div class="card">
+  <h2>Rastrear Guía de Envío</h2>
+
+  <div class="buscador">
+    <input
+      type="text"
+      name="codigoRastreo"
+      [(ngModel)]="codigoRastreo"
+      (keyup.enter)="buscar()"
+      placeholder="Ej: EXP-2026-1001" />
+    <button class="btn btn-primary" (click)="buscar()" [disabled]="buscando">
+      {{ buscando ? 'Buscando...' : 'Buscar' }}
+    </button>
+  </div>
+
+  <div class="alert alert-error" *ngIf="mensajeError">{{ mensajeError }}</div>
+
+  <div class="ficha-envio" *ngIf="envio">
+    <div class="ficha-header">
+      <h3>{{ envio.codigoRastreo }}</h3>
+      <span [ngClass]="claseEstado()">{{ envio.estado }}</span>
+    </div>
+
+    <div class="progreso-container">
+      <div class="progreso-barra" [style.width.%]="porcentajeProgreso()"></div>
+    </div>
+
+    <dl class="ficha-detalle">
+      <dt>Destinatario</dt>
+      <dd>{{ envio.destinatario }}</dd>
+
+      <dt>Dirección Destino</dt>
+      <dd>{{ envio.direccionDestino }}</dd>
+
+      <dt>Monto de Flete</dt>
+      <dd>₡{{ envio.montoFlete | number:'1.2-2' }}</dd>
+
+      <dt>Fecha de Despacho</dt>
+      <dd>{{ envio.fechaDespacho ? (envio.fechaDespacho | date:'mediumDate') : 'No registrada' }}</dd>
+
+      <dt>Entrega Estimada</dt>
+      <dd>{{ envio.fechaEntregaEstimada ? (envio.fechaEntregaEstimada | date:'mediumDate') : 'No registrada' }}</dd>
+
+      <dt>Peso Total</dt>
+      <dd>{{ envio.pesoTotalKg | number:'1.2-2' }} kg</dd>
+
+      <dt>Fecha de Creación</dt>
+      <dd>{{ envio.fechaCreacion | date:'medium' }}</dd>
+    </dl>
+
+    <h4 class="titulo-paquetes">Paquetes ({{ envio.paquetes.length }})</h4>
+    <ul class="lista-paquetes">
+      <li *ngFor="let paquete of envio.paquetes">
+        <span>{{ paquete.descripcion }}</span>
+        <strong>{{ paquete.pesoKg | number:'1.2-2' }} kg</strong>
+      </li>
+    </ul>
+  </div>
+
+  <p *ngIf="buscado && !envio && !buscando && !mensajeError">No hay resultados para mostrar.</p>
+</div>

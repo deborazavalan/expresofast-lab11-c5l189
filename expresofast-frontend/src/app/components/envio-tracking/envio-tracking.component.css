@@ -1,0 +1,104 @@
+.buscador {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1rem 0 1.2rem;
+  max-width: 480px;
+}
+
+.buscador input {
+  flex: 1;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #e4dbf7;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.ficha-envio {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e4dbf7;
+}
+
+.ficha-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.progreso-container {
+  width: 100%;
+  height: 12px;
+  background-color: #ede9fe;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+}
+
+.progreso-barra {
+  height: 100%;
+  background-color: #8b5cf6;
+  transition: width 0.4s ease;
+}
+
+.ficha-detalle {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  row-gap: 0.6rem;
+}
+
+.ficha-detalle dt {
+  font-weight: 700;
+  color: #362a52;
+}
+
+.ficha-detalle dd {
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge-pendiente {
+  background-color: #fdf1dc;
+  color: #b6811f;
+}
+
+.badge-transito {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.badge-entregado {
+  background-color: #e3faf1;
+  color: #0f7a52;
+}
+
+.badge-cancelado {
+  background-color: #fde6ee;
+  color: #a3244f;
+}
+
+.titulo-paquetes {
+  margin: 1.25rem 0 0.5rem;
+  color: #362a52;
+}
+
+.lista-paquetes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lista-paquetes li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e4dbf7;
+  font-size: 0.9rem;
+}
